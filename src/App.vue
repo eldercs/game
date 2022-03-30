@@ -29,7 +29,6 @@
       :class="{ yellow: this.activeYellow }" 
       @click="compareResult(3)">3</button>
       <audio id = "player4" src = "./audio/sounds_4.mp3" />
-     <!--  <p>{{ round }}</p> -->
     </div>
     <input v-model.number = "difficulty" name="r1" type="radio" value="1500" checked> Легкий
     <input v-model.number = "difficulty" name="r1" type="radio" value="1000"> Средний
@@ -113,7 +112,6 @@ export default {
         }
       }
       else{
-        console.log("nooo:", this.round[this.complateRound.length-1])
         this.complateRound = []
         this.round = [] 
         this.startBlock = false
