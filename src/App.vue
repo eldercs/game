@@ -1,13 +1,41 @@
 <template>
   <div id="app">
-    <div>
-      <button :disabled = "buttonBlock" class = "button-blue" :class="{ blue: this.activeBlue }" @click="compareResult(0)">0</button>
-      <button :disabled = "buttonBlock" class = "button-red" :class="{ red: this.activeRed }" @click="compareResult(1)">1</button>
-      <button :disabled = "buttonBlock" class = "button-green" :class="{ green: this.activeGreen }" @click="compareResult(2)">2</button>
-      <button :disabled = "buttonBlock" class = "button-yellow" :class="{ yellow: this.activeYellow }" @click="compareResult(3)">3</button>
+    <div class = "block__buttons">
+      <button 
+      onclick="document.getElementById('player1').play()" 
+      :disabled = "buttonBlock" 
+      class = "button-player button-blue" 
+      :class="{ blue: this.activeBlue }" 
+      @click="compareResult(0)" >0</button>
+      <audio id = "player1" src = "./audio/sounds_1.mp3" />
+
+      <button onclick="document.getElementById('player2').play()" 
+      :disabled = "buttonBlock" 
+      class = "button-player button-red" 
+      :class="{ red: this.activeRed }" 
+      @click="compareResult(1)">1</button>
+      <audio id = "player2" src = "./audio/sounds_2.mp3" />
+
+      <button onclick="document.getElementById('player3').play()" 
+      :disabled = "buttonBlock" 
+      class = "button-player button-green" 
+      :class="{ green: this.activeGreen }" 
+      @click="compareResult(2)">2</button>
+      <audio id = "player3" src = "./audio/sounds_3.mp3" />
+
+      <button onclick="document.getElementById('player4').play()" 
+      :disabled = "buttonBlock" 
+      class = "button-player button-yellow" 
+      :class="{ yellow: this.activeYellow }" 
+      @click="compareResult(3)">3</button>
+      <audio id = "player4" src = "./audio/sounds_4.mp3" />
      <!--  <p>{{ round }}</p> -->
     </div>
-    <button :disabled = "startBlock" @click="startGame">Start</button>
+    <input v-model.number = "difficulty" name="r1" type="radio" value="1500" checked> Легкий
+    <input v-model.number = "difficulty" name="r1" type="radio" value="1000"> Средний
+    <input v-model.number = "difficulty" name="r1" type="radio" value="400"> Сложный
+    <br>
+    <button class = "button-start" :disabled = "startBlock" @click="startGame">Start</button>
   </div>
 </template>
 
@@ -16,6 +44,7 @@ export default {
   name: "App",
   data() {
     return {
+      difficulty: 1500,
       buttonBlock: true,
       startBlock: false,
       round: [],
@@ -37,28 +66,41 @@ export default {
     combinationColor(item) {
       this.buttonBlock = true;
       this.startBlock = true
+      let dif = this.difficulty+250;
       let i = 1;
       item.forEach((item) => {
         if (item == 0) {
-          setTimeout(() => (this.activeBlue = true), 1500 * i);
-          setTimeout(() => (this.activeBlue = false), 1400 * (i + 1));
+          setTimeout(() => {
+              (this.activeBlue = true)
+              document.getElementById('player1').play()
+          }, dif * i);
+          setTimeout(() => (this.activeBlue = false), dif * (i + 1) - 250);
           i++;
         } else if (item == 1) {
-          setTimeout(() => (this.activeRed = true), 1500 * i);
-          setTimeout(() => (this.activeRed = false), 1400 * (i + 1));
+          setTimeout(() => {
+            (this.activeRed = true)
+            document.getElementById('player2').play()
+          }, dif * i);
+          setTimeout(() => (this.activeRed = false), dif * (i + 1) - 250);
           i++;
         } else if (item == 2) {
-          setTimeout(() => (this.activeGreen = true), 1500 * i);
-          setTimeout(() => (this.activeGreen = false), 1400 * (i + 1));
+          setTimeout(() => {
+            (this.activeGreen = true)
+            document.getElementById('player3').play()
+          }, dif * i);
+          setTimeout(() => (this.activeGreen = false), dif * (i + 1) - 250);
           i++;
         } else if (item == 3) {
-          setTimeout(() => (this.activeYellow = true), 1500 * i);
-          setTimeout(() => (this.activeYellow = false), 1400 * (i + 1));
+          setTimeout(() => {
+            (this.activeYellow = true)
+            document.getElementById('player4').play()
+          }, dif * i);
+          setTimeout(() => (this.activeYellow = false), dif * (i + 1) - 250);
           i++;
         }
       });
-      setTimeout(() => ( this.buttonBlock = false), 1400 * (i));
-      setTimeout(() => ( this.startBlock = false), 1400 * (i));
+      setTimeout(() => ( this.buttonBlock = false), dif * (i));
+      setTimeout(() => ( this.startBlock = false), dif * (i));
     },
     compareResult(idButton){
       this.complateRound.push(idButton);
@@ -74,7 +116,8 @@ export default {
         console.log("nooo:", this.round[this.complateRound.length-1])
         this.complateRound = []
         this.round = [] 
-        this.startBlock = false;
+        this.startBlock = false
+        this.buttonBlock = true
       }
     }
   },
@@ -89,6 +132,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.block__buttons{
+  display:grid;
+  width:220px;
+  gap:10px;
+  margin:0 auto;
+  grid-template-columns: 100px 100px;
 }
 .blue {
   background: blue;
@@ -114,7 +164,13 @@ export default {
 .button-yellow:active{
   background: yellow;
 }
-button{
-  padding:10px;
+.button-player{
+  padding:40px;
+}
+.button-start{
+  background: skyblue;
+  padding:10px 20px;  
+  border-radius: 5px;
+  color:black
 }
 </style>
